@@ -19,9 +19,9 @@ team_counts=included_tweets %>%
   mutate(Total=Haynes+Shams+Woj) %>%
   arrange(time_period,teams) %>% clean_names(case="upper_camel")
 
-sheet_write(team_counts,
-            ss="https://docs.google.com/spreadsheets/d/1KY8s53qnl75Yoj-p6RAMYGtYtVJ_qj_Qv0fnVEiwbzY/edit#gid=1467721205",
-            sheet="Counts")
+# sheet_write(team_counts,
+#             ss="https://docs.google.com/spreadsheets/d/1KY8s53qnl75Yoj-p6RAMYGtYtVJ_qj_Qv0fnVEiwbzY/edit#gid=1467721205",
+#             sheet="Counts")
 
 only_teams=team_counts %>% clean_names() %>% filter(teams != "Agent" & teams != "NBA") %>% 
   pivot_longer(cols=c("haynes","shams","woj"),names_to="reporter",values_to="count") %>% 
@@ -81,7 +81,10 @@ agent_counts=included_tweets %>%
   rowwise() %>% mutate(max_percent=max(`Haynes`,`Shams`,`Woj`)/total) %>% ungroup() %>%
   arrange(desc(total)) %>% clean_names(case="upper_camel")
 
-sheet_write(agent_counts,
-            ss="https://docs.google.com/spreadsheets/d/1KY8s53qnl75Yoj-p6RAMYGtYtVJ_qj_Qv0fnVEiwbzY/edit#gid=1467721205",
-            sheet="Agents")
+range_write(ss="https://docs.google.com/spreadsheets/d/1KY8s53qnl75Yoj-p6RAMYGtYtVJ_qj_Qv0fnVEiwbzY/edit#gid=1467721205",
+            data=agent_counts %>% select(Agent),sheet="Agents",range="A1")
+
+# sheet_write(agent_counts,
+#             ss="https://docs.google.com/spreadsheets/d/1KY8s53qnl75Yoj-p6RAMYGtYtVJ_qj_Qv0fnVEiwbzY/edit#gid=1467721205",
+#             sheet="Agents")
 
